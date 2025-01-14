@@ -2,25 +2,6 @@ from manim import *
 from formula import *
 from 自定义动画 import *
 
-A = []
-for i in range(0, 5):
-    P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
-    text = MathTex(f"A_{i}")
-    A.append([P , text])
-P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
-text = MathTex("A_n")
-A.append([P , text])
-
-B = []
-for i in range(0, 5):
-    P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
-    text = MathTex(f"B_{i}")
-    B.append([P , text])
-P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
-text = MathTex("B_n")
-B.append([P , text])
-del P, text
-
 class 动画场景1(Scene):
     def construct(self):
         # 定义一个点P，一个速度向量v
