@@ -1,0 +1,8 @@
+python
+manim
+ipykernel notebook
+
+manim涉及latex公式需要安装
+
+latex（Texlive）
+https://tug.org/texlive/windows.html#install
