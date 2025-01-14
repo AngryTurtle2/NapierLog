@@ -1,4 +1,4 @@
-数列A = r"A_0 A_1 A_2 A_3 A4 A_n "
+数列A = r"A_0 A_1 A_2 A_3 A_4 A_n "
 数列B = r"B_0 B_1 B_2 B_3 B_4 B_n "
 速度V = r"v "
 匀速距离1 = r"v \cdot t "

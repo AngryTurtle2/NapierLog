@@ -1,9 +1,10 @@
 from manim import *
 from formula import *
+from 自定义动画 import *
 class 动画场景1(Scene):
     def construct(self):
         # 定义一个点P，一个速度向量v
-        A0 = LEFT * 6
+        A0 = LEFT * 6.5
         v = RIGHT
 
         P = Dot(point=ORIGIN,color=GREEN, radius=0.04)
@@ -19,41 +20,36 @@ class 动画场景1(Scene):
                about_point = P.get_center(),
                run_time = 4,
                rate_func=smooth)
-        )
-        
+        )   
 
         self.wait()
-        bias = Pg.get_center() - P.get_center() 
+        bias = Pg.get_center() - P.get_center()
         Pg.move_to(A0) 
-        path = Line(start=A0 + bias, end = A0 + 12 * v + bias)
-        self.add((path))
+        path = Line(start=A0 - bias, end = A0 + 13 * RIGHT - bias)
+        self.add(path)
         self.wait(3)
+        
         # 组合
-        # group = VGroup(Pg, path)
-        linear_animation = MoveAlongPath(Pg, 
-                                         path, 
-                                         rate_func=linear, 
-                                         run_time=5)
 
         self.play(
             FadeIn(path),
-            linear_animation
+            运动(Pg, A0 , end = A0 + 13 * RIGHT ,run_time = 5)
         )
         # 
         self.wait()
 
-        ''' 
-        title = Tex(数列A)
+        
+        title = MathTex(数列A)
         self.play(
             Write(title),
         )
         self.wait()
 
-        transform_title = Tex(数列B)
+        transform_title = MathTex(数列B)
         transform_title.to_corner(UP + LEFT)
         self.play(
             Transform(title, transform_title),
-        )'''
+        )
         self.wait()
 
 class 动画场景2(Scene):
