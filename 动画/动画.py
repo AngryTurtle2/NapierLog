@@ -34,7 +34,7 @@ class 动画场景1(Scene):
         A0 = LEFT * 6.5
         v = RIGHT
 
-        P = Dot(point=ORIGIN,color=GOLD, radius=0.1)
+        P = Dot(point=ORIGIN,color=GOLD, radius=0.06)
         P_text = Text("P").next_to(P, direction=DOWN*2)
         Pv = Arrow(start=P.get_center(), end = P.get_center()+RIGHT, color=RED)
         Pv.shift(LEFT*0.25)
@@ -88,7 +88,7 @@ class 动画场景1(Scene):
         self.play(FadeIn(path))
         path.add_updater(update_markers)
         self.play(
-            运动(Pg, A0 + bias , end = A0 + 13 * RIGHT + bias ,run_time = 12.5)   
+            运动(Pg, A0 + bias , end = A0 + 13 * RIGHT + bias ,run_time = 13)   
         )
         A0_text.next_to(A0_P, direction=DOWN*2)
         path.clear_updaters()
@@ -118,7 +118,7 @@ class 动画场景1(Scene):
 
 class 动画场景2(MovingCameraScene):
     def construct(self):
-        Q = Dot(point=ORIGIN,color=GREEN_D, radius=0.1)
+        Q = Dot(point=ORIGIN,color=GREEN_D, radius=0.06)
         Q_text = Text("Q").next_to(Q, direction=DOWN*2.5).scale(.7)
         C_text = Text("C")
         D_text = Text("D")
@@ -415,7 +415,7 @@ class 动画场景6(Scene):
         self.wait(3)
 if __name__ == "__main__":
     from os import system
-    system("manim -ql 动画.py 动画场景1")
+    system("manim -pql 动画.py 动画场景1")
     system("manim -ql 动画.py 动画场景2")
     system("manim -ql 动画.py 动画场景3")
     system("manim -ql 动画.py 动画场景4")
