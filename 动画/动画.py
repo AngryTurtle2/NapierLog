@@ -363,12 +363,61 @@ class 动画场景5(Scene):
 
 class 动画场景6(Scene):
     def construct(self):
+        y_text = MathTex(纳皮尔对数定义的形式)
+        self.play(
+            Write(y_text,run_time=3)
+        )
+        self.wait()
+        self.play(
+            FadeOut(y_text)
+        )
+        self.wait()
+
+        axes = Axes(
+            x_range=[0, np.pi],
+            y_range=[0, 1],
+            axis_config={"color": BLUE},
+        ).scale(.5)
+
+        # Create Graph
+        graph = axes.plot(lambda x: np.sin(x),x_range=[0, np.pi,  0.001])
+        graph_label = axes.get_graph_label(graph, label='sin(x)').shift(LEFT * 5 + DOWN)
+
+        self.play(
+            Create(axes), 
+            Create(graph), 
+            Write(graph_label)
+        )
+        self.wait()
+        self.clear()
+
+        napsin_text = MathTex(纳皮尔正弦定义)
+        self.play(
+            Write(napsin_text,run_time=3)
+        )
+        self.wait()
+
+        napsin30_text = MathTex(纳皮尔正弦30度角)
+        self.play(
+            napsin_text.animate.shift(UP),
+            Write(napsin30_text,run_time=3)
+        )
+        self.wait()
+
+        napsin1_text = MathTex(纳皮尔正弦1分角)
+        napsin1_text.next_to(napsin30_text, direction=DOWN)
+        self.play(
+            Write(napsin1_text,run_time=3)
+        )
+        self.wait()
+
+
         self.wait(3)
 if __name__ == "__main__":
     from os import system
-    #system("manim -pql 动画.py 动画场景1")
-    #system("manim -pql 动画.py 动画场景2")
-    #system("manim -pql 动画.py 动画场景3")
-    #system("manim -pql 动画.py 动画场景4")
-    system("manim -pql 动画.py 动画场景5")
-    #system("manim -pql 动画.py 动画场景6")
+    system("manim -ql 动画.py 动画场景1")
+    system("manim -ql 动画.py 动画场景2")
+    system("manim -ql 动画.py 动画场景3")
+    system("manim -ql 动画.py 动画场景4")
+    system("manim -ql 动画.py 动画场景5")
+    system("manim -ql 动画.py 动画场景6")
