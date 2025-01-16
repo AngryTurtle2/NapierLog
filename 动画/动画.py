@@ -97,11 +97,14 @@ class 动画场景1(Scene):
         for mob in self.mobjects:
             totalg.add(mob)
         self.play(
-            totalg.animate.shift(UP*2.5 + RIGHT*0.5)
+            totalg.animate.shift(UP*2.5)
         )
         self.wait(2)
 
+        self.play(FadeOut(Pg))
+        self.wait()  
         self.play(FadeOut(totalg))
+        self.wait()
 
         formu = [速度V,匀速距离1,匀速距离2,匀速距离3]
         for i in range(4):
@@ -303,7 +306,7 @@ class 动画场景4(Scene):
 
         # Create Graph
         graph = axes.plot(lambda x: np.log(x),x_range=[0.0001, 1,  0.0001])
-        graph_label = axes.get_graph_label(graph, label='ln(x)').shift(LEFT * 5)
+        graph_label = axes.get_graph_label(graph, label='ln(x)').shift(LEFT * 5 + UP)
         self.play(Create(axes), Create(graph), Write(graph_label))
         self.wait(1)
         self.wait()
@@ -415,9 +418,9 @@ class 动画场景6(Scene):
         self.wait(3)
 if __name__ == "__main__":
     from os import system
-    system("manim -pql 动画.py 动画场景1")
-    system("manim -ql 动画.py 动画场景2")
-    system("manim -ql 动画.py 动画场景3")
-    system("manim -ql 动画.py 动画场景4")
-    system("manim -ql 动画.py 动画场景5")
-    system("manim -ql 动画.py 动画场景6")
+    system("manim -qh 动画.py 动画场景1")
+    #system("manim -qh 动画.py 动画场景2")
+    #system("manim -qh 动画.py 动画场景3")
+    #system("manim -qh 动画.py 动画场景4")
+    #system("manim -qh 动画.py 动画场景5")
+    #system("manim -qh 动画.py 动画场景6")
