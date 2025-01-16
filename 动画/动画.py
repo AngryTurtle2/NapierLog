@@ -2,6 +2,7 @@ from manim import *
 from formula import *
 from 自定义动画 import *
 from manim.utils.rate_functions import unit_interval
+import math
 
 
 A = []
@@ -33,7 +34,7 @@ class 动画场景1(Scene):
         A0 = LEFT * 6.5
         v = RIGHT
 
-        P = Dot(point=ORIGIN,color=GOLD, radius=0.04)
+        P = Dot(point=ORIGIN,color=GOLD, radius=0.1)
         P_text = Text("P").next_to(P, direction=DOWN*2)
         Pv = Arrow(start=P.get_center(), end = P.get_center()+RIGHT, color=RED)
         Pv.shift(LEFT*0.25)
@@ -115,7 +116,7 @@ class 动画场景1(Scene):
             self.wait()
 
 
-class 动画场景2(Scene):
+class 动画场景2(MovingCameraScene):
     def construct(self):
         Q = Dot(point=ORIGIN,color=GREEN_D, radius=0.1)
         Q_text = Text("Q").next_to(Q, direction=DOWN*2.5).scale(.7)
@@ -135,7 +136,7 @@ class 动画场景2(Scene):
         Q.move_to(path.get_left())
         Q_text.next_to(Q, direction=DOWN*2.5)
         self.play(
-            FadeIn(L_text.move_to(path.get_center() + UP * 2)),
+            FadeIn(L_text.move_to(path.get_center() + UP * 1.5)),
             FadeIn(path),
             FadeIn(C_text.move_to(path.get_left() + UP * 0.5)),
             FadeIn(D_text.move_to(path.get_right() + UP * 0.5)),
@@ -186,6 +187,9 @@ class 动画场景2(Scene):
         )
         self.time = 0
         self.last_update = 0
+        B_text_g = Group()
+        B_text_g.add(B[0][0])
+        B_text_g.add(B[0][1])
         def update_markers(mob, dt):
             self.time += dt
             if self.time - self.last_update >= 1 and self.time <= 10:
@@ -194,6 +198,8 @@ class 动画场景2(Scene):
                 Ptmp_text = B[i][1].next_to(Ptmp, direction=DOWN* 0.75).scale(0.75)
                 self.add(Ptmp)
                 self.add(Ptmp_text)
+                B_text_g.add(Ptmp)
+                B_text_g.add(Ptmp_text)
                 self.last_update  = self.time        
         @unit_interval
         def rate_func_Q(t):
@@ -214,6 +220,46 @@ class 动画场景2(Scene):
             )
         )
 
+        self.play(
+            self.camera.frame.animate.shift(DOWN * 2)
+        )
+        self.wait(2)
+        B0B1 = NumberLine(
+            x_range=[0, 1, 1],
+            length=13 / 5,
+            color=BLUE,
+            include_numbers=False
+        ).move_to(path.get_left()+ DOWN * 2 + RIGHT * 13/5 / 2)
+        tmp_l = []
+        for i  in range(0,4):
+            tmp = B0B1.copy()
+            tmp_l.append(tmp)
+        
+        self.play(
+            FadeIn(B0B1),
+        )
+        self.wait(2)
+        self.play(
+            tmp_l[0].animate.shift(RIGHT * 2.6),
+            tmp_l[1].animate.shift(RIGHT * 2.6 * 2),
+            tmp_l[2].animate.shift(RIGHT * 2.6 * 3),
+            tmp_l[3].animate.shift(RIGHT * 2.6 * 4),
+        )
+        self.wait()
+
+        B1B2 = B0B1.copy().scale(0.8).shift(DOWN + (1.3 +1.04) * RIGHT)
+        tmp_l2 = [B1B2.copy() for tmp in tmp_l]
+
+        self.play(
+            FadeIn(B1B2),
+        )
+        self.wait(2) 
+        self.play(
+            tmp_l2[0].animate.shift(RIGHT * 2.08),
+            tmp_l2[1].animate.shift(RIGHT * 2.08 * 2),
+            tmp_l2[2].animate.shift(RIGHT * 2.08 * 3),
+            tmp_l2[3].animate.shift(RIGHT * 2.08 * 4),
+        )
         self.wait()
         path.clear_updaters()
         self.wait()
@@ -222,23 +268,107 @@ class 动画场景2(Scene):
 
 class 动画场景3(Scene):
     def construct(self):
-        self.wait(3)
+        self.print_formu(衰减距离1)
+        self.print_formu(剩余距离1)
+        self.print_formu(衰减距离2)
+        self.print_formu(剩余距离2)
+        self.print_formu(衰减距离3)
+        self.print_formu(剩余距离3)
+        self.print_formu(衰减距离n)
+        self.print_formu(剩余距离n)
+        self.print_formu(纳皮尔对数定义)
+        self.print_formu(对数为0)
+        self.print_formu(对数为第一个单位)
+        self.print_formu(对数为无穷大)
 
-class 动画场景3(Scene):
-    def construct(self):
-        self.wait(3)
 
-
+    
+    def print_formu(self, formu):
+        tmp = MathTex(formu)
+        self.play(
+            Write(tmp)
+        )
+        self.wait()
+        self.play(
+            FadeOut(tmp)
+        )
+        self.wait()
 class 动画场景4(Scene):
     def construct(self):
-        self.wait(3)
+        axes = Axes(
+            x_range=[-1, 1],
+            y_range=[-5, 5],
+            axis_config={"color": BLUE},
+        )
+
+        # Create Graph
+        graph = axes.plot(lambda x: np.log(x),x_range=[0.0001, 1,  0.0001])
+        graph_label = axes.get_graph_label(graph, label='ln(x)').shift(LEFT * 5)
+        self.play(Create(axes), Create(graph), Write(graph_label))
+        self.wait(1)
+        self.wait()
 
 
 class 动画场景5(Scene):
+    def construct(self):
+        xn_text = MathTex("x_n = ",剩余距离n)
+        self.play(
+            Write(xn_text,run_time=3)
+        )
+        self.wait(3)
+        xt_text = MathTex(剩余距离公式)
+        self.play(
+            FadeOut(xn_text), 
+            FadeIn(xt_text,run_time=3)
+        )
+        self.wait(3)
+
+        xt_text2 = MathTex(剩余距离公式变换1)
+        self.play(
+            FadeOut(xt_text), 
+            Write(xt_text2,run_time=3),
+        )
+        self.wait()     
+        self.play(
+            xt_text2.animate.shift(UP)
+        )
+        self.wait()
+
+        yt_text = MathTex(匀速运动距离公式)
+        self.play(
+            Write(yt_text,run_time=3)
+        )
+        self.wait(3)
+        t_text = MathTex(匀速运动时间t)
+        self.play(
+            FadeOut(yt_text),
+            Write(t_text,run_time=3)
+        )
+        self.wait(3)
+        yt_text2 = MathTex(两种运动联系公式)
+        self.play(
+            FadeOut(xt_text2),
+            FadeOut(t_text),
+            Write( yt_text2,run_time=3)
+        )
+        self.wait(3)
+        yt_text3 = MathTex(纳皮尔对数定义的实质)
+        self.play(
+            Transform(yt_text2, yt_text3,run_time=3)
+        )
+        self.wait(3)
+
+
+
+
+class 动画场景6(Scene):
     def construct(self):
         self.wait(3)
 if __name__ == "__main__":
     from os import system
     #system("manim -pql 动画.py 动画场景1")
-    system("manim -pql 动画.py 动画场景2")
-    #system("manim -p 动画.py 动画场景3")
+    #system("manim -pql 动画.py 动画场景2")
+    #system("manim -pql 动画.py 动画场景3")
+    #system("manim -pql 动画.py 动画场景4")
+    system("manim -pql 动画.py 动画场景5")
+    #system("manim -pql 动画.py 动画场景6")

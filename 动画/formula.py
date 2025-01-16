@@ -10,7 +10,7 @@
 剩余距离2 = r"|B_2D| = |B_1D| - r|B_1D| = L (1 - r)^2 "
 衰减距离3 = r"r|B_2D| = rL \cdot (1 - r)^2 "
 剩余距离3 = r"|B_3D| = |B_2D| - r * |B_2D| = L (1 - r)^3 "
-衰减距离n = r"|B_nB_(n+1)| = rL \cdot (1 - r)^n "
+衰减距离n = r"|B_{n}B_{n+1}| = rL \cdot (1 - r)^n "
 剩余距离n = r"|B_nD| = L \cdot (1 - r)^n "
 纳皮尔对数定义 = r"A_i = \text{Naplog}(|B_iD|) "
 对数为0 = r"\text{Naplog}(L) = 0 "
