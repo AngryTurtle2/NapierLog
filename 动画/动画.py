@@ -1,6 +1,31 @@
 from manim import *
 from formula import *
 from 自定义动画 import *
+from manim.utils.rate_functions import unit_interval
+
+
+A = []
+for i in range(0, 10):
+    P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
+    text = MathTex(f"A_{i}")
+    A.append([P , text])
+P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
+text = MathTex("A_n")
+A.append([P , text])
+
+B = []
+for i in range(0, 10):
+    P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
+    text = MathTex(f"B_{i}")
+    B.append([P , text])
+P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
+text = MathTex("B_n")
+B.append([P , text])
+P = Dot(point=ORIGIN,color=MAROON_A, radius=0.04)
+text = MathTex("B_i")
+B.append([P , text])
+del P, text
+
 
 class 动画场景1(Scene):
     def construct(self):
@@ -10,10 +35,14 @@ class 动画场景1(Scene):
 
         P = Dot(point=ORIGIN,color=GOLD, radius=0.04)
         P_text = Text("P").next_to(P, direction=DOWN*2)
-        Pv = Arrow(start=P.get_center() - 0.5 * LEFT, end = P.get_center()+RIGHT, color=RED, tip_length=0.2)
+        Pv = Arrow(start=P.get_center(), end = P.get_center()+RIGHT, color=RED)
+        Pv.shift(LEFT*0.25)
         Pg = VGroup(P, P_text, Pv)
         bias = Pg.get_center() - P.get_center()
         
+        A0_P = A[0][0]
+        A0_text = A[0][1]
+
         self.play(FadeIn(P), run_time= .5),
         self.play(FadeIn(P_text), run_time= .5),
         self.play(FadeIn(Pv), run_time= .5),
@@ -21,42 +50,177 @@ class 动画场景1(Scene):
             Rotate(Pv,
                angle=PI*2,
                about_point = P.get_center(),
-               run_time = 2,
+               run_time = 4,
                rate_func=smooth)
-        )   
+        )
+        self.wait()
+
+        Pg.move_to(A0 + bias) 
+        path = NumberLine(
+            x_range=[0, 13, 1],
+            length=13,
+            color=BLUE,
+            include_numbers=True,
+            label_direction=UP,
+        )
+
+        A0_P.move_to(A0)
+        A0_text.next_to(A0_P, direction=UP*2)
         self.add(A0_P)
         self.add(A0_text)
 
-        self.wait()
-        Pg.move_to(A0) 
-        path = Line(start=A0 - bias, end = A0 + 13 * RIGHT - bias)
-        self.add(path)
-        self.wait(3)
+        self.time = 0
+        self.last_update = 0
+        totalg = Group()
+        def update_markers(mob, dt):
+            self.time += dt
+            if self.time - self.last_update >= 1 and self.time <= 10:
+                i  = int(self.time)
+                Ptmp = A[i][0].move_to(P.get_center())
+                Ptmp_text = A[i][1].next_to(Ptmp, direction=DOWN*2)
+                self.add(Ptmp)
+                self.add(Ptmp_text)
+                totalg.add(Ptmp)
+                totalg.add(Ptmp_text)
+                self.last_update  = self.time
         
-        # 组合
-
+        self.play(FadeIn(path))
+        path.add_updater(update_markers)
         self.play(
-            FadeIn(path),
-            运动(Pg, A0 , end = A0 + 13 * RIGHT ,run_time = 5)
+            运动(Pg, A0 + bias , end = A0 + 13 * RIGHT + bias ,run_time = 12.5)   
         )
-        # 
+        A0_text.next_to(A0_P, direction=DOWN*2)
+        path.clear_updaters()
         self.wait()
-
-        
-        title = MathTex(数列A)
+        Pg.shift(LEFT*5.5)
+        for mob in self.mobjects:
+            totalg.add(mob)
         self.play(
-            Write(title),
+            totalg.animate.shift(UP*2.5 + RIGHT*0.5)
         )
-        self.wait()
+        self.wait(2)
 
-        transform_title = MathTex(数列B)
-        transform_title.to_corner(UP + LEFT)
-        self.play(
-            Transform(title, transform_title),
-        )
-        self.wait()
+        self.play(FadeOut(totalg))
+
+        formu = [速度V,匀速距离1,匀速距离2,匀速距离3]
+        for i in range(4):
+            tmp = MathTex(formu[i])
+            self.play(
+                Write(tmp)
+            )
+            self.wait(1)
+            self.play(
+                FadeOut(tmp)
+            )
+            self.wait()
+
 
 class 动画场景2(Scene):
+    def construct(self):
+        Q = Dot(point=ORIGIN,color=GREEN_D, radius=0.1)
+        Q_text = Text("Q").next_to(Q, direction=DOWN*2.5).scale(.7)
+        C_text = Text("C")
+        D_text = Text("D")
+        L_text = Text("L")
+        self.add(Q, Q_text)
+        self.play(FadeIn(Q,run_time= .5))
+        self.play(FadeIn(Q_text,run_time= .5))
+
+
+        path = Line(
+            start= LEFT * 6.5,
+            end= RIGHT * 6.5,
+            color=RED,
+        )
+        Q.move_to(path.get_left())
+        Q_text.next_to(Q, direction=DOWN*2.5)
+        self.play(
+            FadeIn(L_text.move_to(path.get_center() + UP * 2)),
+            FadeIn(path),
+            FadeIn(C_text.move_to(path.get_left() + UP * 0.5)),
+            FadeIn(D_text.move_to(path.get_right() + UP * 0.5)),
+        )
+        self.wait(2)
+        self.play(
+            MoveAlongPath(
+                Q, path, rate_func=there_and_back, run_time=4
+            )
+        )
+
+        B[0][0].move_to(path.get_left())
+        B[0][1].next_to(B[0][0], direction=DOWN)
+
+        self.play(
+            FadeIn(B[0][0]),
+            FadeIn(B[0][1]),
+        )
+        self.wait(1)
+
+        Q.shift(RIGHT * 6.5)
+        Q_text.next_to(Q, direction=DOWN*2.5)
+
+        B[11][0].move_to(Q.get_center())
+        B[11][1].next_to(Q, direction=DOWN*0.75).scale(0.75)
+
+        self.play(
+            FadeIn(B[11][0]),
+            FadeIn(B[11][1]),
+        )
+
+        Q_move_text = Text("下一秒Q点需要移动的距离是：").scale(0.75)
+        Q_move_formu = MathTex("r \cdot |B_iD|  ","  0 < r < 1").scale(0.75)
+        Q_move_formu.arrange(DOWN)
+        Q_move_text.next_to(Q, direction=DOWN*4.5)
+        Q_move_formu.next_to(Q, direction=DOWN*8)
+        self.play(
+            Write(Q_move_text),
+            Write(Q_move_formu),
+        )
+        self.wait(3)
+
+        self.play(
+            FadeOut(B[11][0]),
+            FadeOut(B[11][1]),
+            FadeOut(Q_move_text),
+            FadeOut(Q_move_formu),
+        )
+        self.time = 0
+        self.last_update = 0
+        def update_markers(mob, dt):
+            self.time += dt
+            if self.time - self.last_update >= 1 and self.time <= 10:
+                i  = int(self.time)
+                Ptmp = B[i][0].move_to(Q.get_center())
+                Ptmp_text = B[i][1].next_to(Ptmp, direction=DOWN* 0.75).scale(0.75)
+                self.add(Ptmp)
+                self.add(Ptmp_text)
+                self.last_update  = self.time        
+        @unit_interval
+        def rate_func_Q(t):
+            r = 0.2
+            # 20是一个等于动画播放时长的常数
+            return (1 - (1 - r) ** (20 * t))
+        
+        Qg = Group(Q, Q_text)
+        bias = Qg.get_center() - Q.get_center()
+
+        path.add_updater(update_markers)
+        self.play(
+            运动(Qg, 
+                start = path.get_left() + bias, 
+                end = path.get_right() + bias,
+                rate_func=rate_func_Q,
+                run_time=20
+            )
+        )
+
+        self.wait()
+        path.clear_updaters()
+        self.wait()
+
+
+
+class 动画场景3(Scene):
     def construct(self):
         self.wait(3)
 
@@ -64,8 +228,17 @@ class 动画场景3(Scene):
     def construct(self):
         self.wait(3)
 
+
+class 动画场景4(Scene):
+    def construct(self):
+        self.wait(3)
+
+
+class 动画场景5(Scene):
+    def construct(self):
+        self.wait(3)
 if __name__ == "__main__":
     from os import system
-    system("manim -pql 动画.py 动画场景1")
-    #system("manim -p 动画.py 动画场景2")
+    #system("manim -pql 动画.py 动画场景1")
+    system("manim -pql 动画.py 动画场景2")
     #system("manim -p 动画.py 动画场景3")
