@@ -78,7 +78,7 @@ class 动画场景1(Scene):
             if self.time - self.last_update >= 1 and self.time <= 10:
                 i  = int(self.time)
                 Ptmp = A[i][0].move_to(P.get_center())
-                Ptmp_text = A[i][1].next_to(Ptmp, direction=DOWN*2)
+                Ptmp_text = A[i][1].next_to(Ptmp, direction=UP*2)
                 self.add(Ptmp)
                 self.add(Ptmp_text)
                 totalg.add(Ptmp)
@@ -90,7 +90,7 @@ class 动画场景1(Scene):
         self.play(
             运动(Pg, A0 + bias , end = A0 + 13 * RIGHT + bias ,run_time = 13)   
         )
-        A0_text.next_to(A0_P, direction=DOWN*2)
+        A0_text.next_to(A0_P, direction=UP*2)
         path.clear_updaters()
         self.wait()
         Pg.shift(LEFT*5.5)
@@ -416,11 +416,133 @@ class 动画场景6(Scene):
 
 
         self.wait(3)
+
+
+class 动画场景7(Scene):
+    def construct(self):
+        self.draw(1,1,匀速距离1)
+        self.draw(2,2,匀速距离2)
+        self.draw(3,3,匀速距离3)
+
+    def draw(self, length, bias, text):
+        line1 = NumberLine(
+            x_range=[0,length,1],
+            length=length,
+            include_numbers=False,
+            color = RED
+        ).shift(DOWN * bias).shift(LEFT * (6 - 0.5*length + 0.5))
+
+        self.play(
+            FadeIn(line1)
+        )
+        self.wait()
+        vt_text = MathTex(text)
+        vt_text.move_to(
+            line1.get_center() + UP * 0.5  
+        ).scale(0.85)
+        self.play(
+            Write(vt_text)
+        )
+        self.wait()
+
+class 动画场景8(Scene):
+    def construct(self):
+        text1 = MathTex('|B_0B_1| = r \cdot |B_0D|')
+        text2 = MathTex('|B_1B_2| = r \cdot |B_1D|')
+        text3 = MathTex('|B_2B_3| = r \cdot |B_2D|')
+
+        text2.shift(DOWN)
+        text3.shift(DOWN * 2)
+
+        self.play(
+            Write(text1)
+        )
+        self.wait()
+        self.play(
+            Write(text2)
+        )
+        self.wait()
+        self.play(
+            Write(text3)
+        )
+        self.wait()
+        self.clear()
+        text4 = MathTex(
+            r"\{ B_0B_1 \: B_1B_2 \: B_2B_3 \: ... \: B_{i}B_{i+1} \}",
+            r"\{ B_1D \: B_2D \: B_3D \: ... \: B_{i}D\}"
+        ).arrange(DOWN)
+
+        self.play(
+            Write(text4)
+        )
+        self.wait()
+
+class 动画场景9(Scene):
+    def construct(self):
+        self.wf("\{a_n\}: \{a, a \cdot q,  a \cdot q^2, ..., a \cdot q^n\}")
+        self.wf("\ln(a) = g, \ln(q) = h")
+        self.wf( "\{\ln(a_n)\}: \{g, g + h,  g + 2*h, ..., g + n*h\}")
+        self.wf("\{a, a*r, a*r^2\}")
+        self.wf("\{o,p,q\}: q = 2*p - o")
+        self.wf("\{o=g, p=g+h, q=g+2h\}")
+
+    def wf(self, text):
+        an_text = MathTex(text,color=RED)
+        self.play(
+            Write(an_text)
+        )
+        self.wait()
+        self.play(
+            FadeOut(an_text)
+        )
+        self.wait()
+
+
+class 动画场景10(Scene):
+    def construct(self):
+        text = Text("求解 x 的值")
+        self.play(
+            Write(text)
+        )
+        self.wait()
+        self.play(
+            FadeOut(text)
+        )
+        self.wait()
+        self.wf("\{10^7 , 7071068, x\}")
+        self.wf(全长对数为0)
+        self.wf(对数值1)
+        self.wf(对数值2)
+        self.wf("x = 5 * 10^6")
+        self.wf("\{10^7 , 7071068, 5*10^6\}")
+        self.wf(比例1)
+        self.wf(比例2)
+        pass
+
+    def wf(self, text):
+        an_text = MathTex(text,color=RED)
+        self.play(
+            Write(an_text)
+        )
+        self.wait()
+        self.play(
+            FadeOut(an_text)
+        )
+        self.wait()
+
+
+
+
+
 if __name__ == "__main__":
     from os import system
-    system("manim -qh 动画.py 动画场景1")
+    #system("manim -qh 动画.py 动画场景1")
     #system("manim -qh 动画.py 动画场景2")
     #system("manim -qh 动画.py 动画场景3")
     #system("manim -qh 动画.py 动画场景4")
     #system("manim -qh 动画.py 动画场景5")
     #system("manim -qh 动画.py 动画场景6")
+    #system("manim -qh 动画.py 动画场景7")
+    system("manim -qh 动画.py 动画场景8")
+    #system("manim -qh 动画.py 动画场景9")
+    #system("manim -qh 动画.py 动画场景10")
