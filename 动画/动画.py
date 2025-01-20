@@ -536,13 +536,13 @@ class 动画场景10(Scene):
 
 if __name__ == "__main__":
     from os import system
-    #system("manim -qh 动画.py 动画场景1")
-    #system("manim -qh 动画.py 动画场景2")
-    #system("manim -qh 动画.py 动画场景3")
-    #system("manim -qh 动画.py 动画场景4")
-    #system("manim -qh 动画.py 动画场景5")
-    #system("manim -qh 动画.py 动画场景6")
-    #system("manim -qh 动画.py 动画场景7")
+    system("manim -qh 动画.py 动画场景1")
+    system("manim -qh 动画.py 动画场景2")
+    system("manim -qh 动画.py 动画场景3")
+    system("manim -qh 动画.py 动画场景4")
+    system("manim -qh 动画.py 动画场景5")
+    system("manim -qh 动画.py 动画场景6")
+    system("manim -qh 动画.py 动画场景7")
     system("manim -qh 动画.py 动画场景8")
-    #system("manim -qh 动画.py 动画场景9")
-    #system("manim -qh 动画.py 动画场景10")
+    system("manim -qh 动画.py 动画场景9")
+    system("manim -qh 动画.py 动画场景10")
